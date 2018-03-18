@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { LoginService } from '../login.service';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -13,15 +15,18 @@ export class AuthorizedPageComponent implements OnInit {
   isLoggedIn:boolean;
   constructor(
     private http: HttpClient,
-    private loginService: LoginService){
+    private loginService: LoginService,
+    private router: Router){
   }
 
   ngOnInit() {      
     this.loginService.isLoggedIn().subscribe(loggedIn =>{
       this.isLoggedIn = loggedIn;
       console.log('what is the vlaue?', loggedIn);
+      // if(!loggedIn){
+      //   this.router.navigate(['/public-page']);
+      // }
     });
-    console.log('logged in?', this.isLoggedIn);
     this.sendToRestApiMethod();
   }
   sendToRestApiMethod() : void {

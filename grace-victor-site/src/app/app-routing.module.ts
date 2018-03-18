@@ -4,15 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent }      from './login/login.component';
 import { PublicPageComponent }      from './public-page/public-page.component';
 import { AuthorizedPageComponent }      from './authorized-page/authorized-page.component';
-
+import { Constants} from './Constants';
 
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'public-page', component: PublicPageComponent },
-  { path: 'authorized-page', component: AuthorizedPageComponent},
-  { path: '', redirectTo: '/public-page', pathMatch: 'full' }
-
+  { path: Constants.pages['LOGIN'], component: LoginComponent },
+  { path: Constants.pages['PUBLIC'], component: PublicPageComponent },
+  { path: Constants.pages['AUTHORIZED'], component: AuthorizedPageComponent},
+  { path: '', redirectTo: Constants.pages['PUBLIC'], pathMatch: 'full' }
 ];
 
 @NgModule({
