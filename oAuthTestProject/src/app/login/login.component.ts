@@ -29,9 +29,7 @@ export class LoginComponent implements OnInit {
     let socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
   
     this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => { //on success
-         //this will return user data from google. What you need is a user token which you will send it to the server
-         console.log('beforeSending', userData.idToken);
+      (userData) => { 
          this.route.navigate([Constants.pages['AUTHORIZED']]);
          this.loginService.login(userData.idToken);
       }
