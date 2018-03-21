@@ -29,7 +29,6 @@ export class NavComponent implements OnInit {
     private symbolService: SymbolService
   ) { 
     this.signOutURL= Constants.SIGNOUT;
-
   }
 
   ngOnInit() {
@@ -38,14 +37,13 @@ export class NavComponent implements OnInit {
 
   selectSymbol(s: string){
     this.selectedSymbol=s;
-    console.log('selectedSymbol:' + this.selectedSymbol);
     this.symbolService.selectSymbol(s);
   }
 
   signOut(){
-    this.socialAuthService.signOut().then(signOut => {
-      this.loginService.logout();
-    });
+    this.socialAuthService.signOut();
+    this.loginService.logout();
+ 
   }
 
   search(){
@@ -62,7 +60,6 @@ export class NavComponent implements OnInit {
         this.symbols.push(d);
       }
     }
-    console.log('symbols:', this.symbols);
   }
 
 }

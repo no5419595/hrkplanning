@@ -6,7 +6,7 @@ import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { PublicPageComponent } from './public-page/public-page.component';
 
-class MockRouter { public navigate() {}; }
+const MockRouter=  {}; 
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -15,7 +15,7 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers:[
-        {provide: Router,  useClass: MockRouter }
+        {provide: Router,  useValue: MockRouter }
       ],
       imports:[
         RouterModule, 

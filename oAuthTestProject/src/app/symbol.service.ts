@@ -10,9 +10,8 @@ export class SymbolService {
   // Observable string streams
   selectedSymbol$ = this.selectedSymbolSource.asObservable();
 
-  // Service message commands
-  selectSymbol(symbol: string) {
-    this.selectedSymbolSource.next(symbol);
+  selectSymbol(symbol: string){
+      this.selectedSymbolSource.next(symbol);
   }
 
   getSymbol() {

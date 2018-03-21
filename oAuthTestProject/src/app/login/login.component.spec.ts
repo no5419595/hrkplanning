@@ -6,8 +6,7 @@ import { AuthService, AuthServiceConfig } from 'angular5-social-login';
 import { LoginService } from '../login.service';
 import { SymbolService } from '../symbol.service';
 
-class MockRouter { public navigate() {}; }
-
+const MockRouter=  {}; 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -17,7 +16,7 @@ describe('LoginComponent', () => {
       declarations: [ LoginComponent ],
       imports:[RouterModule,RouterTestingModule],
       providers:[
-        {provide: Router,  useClass: MockRouter },
+        {provide: Router,  useValue: MockRouter },
         AuthService, 
         {provide:AuthServiceConfig, useValue: new AuthServiceConfig([])},
         LoginService,

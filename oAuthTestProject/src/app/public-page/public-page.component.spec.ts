@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicPageComponent } from './public-page.component';
 import { Router, RouterOutlet, RouterModule } from "@angular/router";
-
-class MockRouter { public navigate() {}; }
+const MockRouter=  {}; 
 
 describe('PublicPageComponent', () => {
   let component: PublicPageComponent;
@@ -12,7 +11,7 @@ describe('PublicPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PublicPageComponent ],
       providers:[
-        {provide: Router,  useClass: MockRouter }
+        {provide: Router,  useValue: MockRouter }
       ]
     })
     .compileComponents();
