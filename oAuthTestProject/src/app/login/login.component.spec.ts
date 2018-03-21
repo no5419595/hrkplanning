@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LoginComponent } from './login.component';
+import { Router, RouterOutlet, RouterModule } from "@angular/router";
+import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService, AuthServiceConfig } from 'angular5-social-login';
+import { LoginService } from '../login.service';
+import { SymbolService } from '../symbol.service';
+
+class MockRouter { public navigate() {}; }
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -8,7 +14,15 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
+      declarations: [ LoginComponent ],
+      imports:[RouterModule,RouterTestingModule],
+      providers:[
+        {provide: Router,  useClass: MockRouter },
+        AuthService, 
+        {provide:AuthServiceConfig, useValue: new AuthServiceConfig([])},
+        LoginService,
+        SymbolService
+      ]
     })
     .compileComponents();
   }));

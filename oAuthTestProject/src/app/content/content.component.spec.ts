@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentComponent } from './content.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SymbolService } from '../symbol.service';
 
 describe('ContentComponent', () => {
   let component: ContentComponent;
@@ -8,7 +10,9 @@ describe('ContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentComponent ]
+      declarations: [ ContentComponent ],
+      imports: [HttpClientModule],
+      providers:[SymbolService]
     })
     .compileComponents();
   }));
