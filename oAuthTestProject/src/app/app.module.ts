@@ -17,6 +17,7 @@ import { Constants } from './Constants';
 import { ContentComponent } from './content/content.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginGuard } from './login.guard';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoginGuard } from './login.guard';
     PublicPageComponent,
     AuthorizedPageComponent,
     ContentComponent,
-    NavComponent
+    NavComponent,
+    PaginationComponent
   ],
   exports:[RouterModule],
   imports: [
