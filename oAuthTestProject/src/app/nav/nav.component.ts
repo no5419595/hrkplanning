@@ -20,7 +20,9 @@ export class NavComponent implements OnInit {
   selectedSymbol: string;
   subscription: Subscription;
   searchFor: string;
-  
+
+  typeList: any[]=[];
+
   listCount: number;
   pageSize: number =8;
   pageNumber: number = 1;
@@ -37,7 +39,6 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit() {
-  
   }
 
   selectSymbol(s: string){
@@ -54,15 +55,43 @@ export class NavComponent implements OnInit {
   search(){
     this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe(data => {
       let retrievedSymbols: any= data;
-      console.log('returnedData:', data);
+      // console.log('returnedData:', data);
       this.symbols= retrievedSymbols.filter( s => s.symbol.indexOf(this.searchFor)!==-1);
-      this.listCount = retrievedSymbols.length;
+
+      let that = this;
+      this.typeList=[];
+      this.initializeTypeList().then(function(){
+        console.log('typeList: ' , that.typeList);
+        that.symbolService.updateFilterList(that.typeList);
+      });
+
+      this.listCount = this.symbols.length;
+      this.pageNumber=1;
       this.refreshView();
     });
   }
+  
+  initializeTypeList(){
+    var promises = [];
+    let h= this.http;
+    let that = this;
+    this.symbols.forEach(function(sym) {
+      promises.push(
+        that.http.get(Constants.API_CONSTANT + '/tops?symbols=' +  sym.symbol).subscribe(topsData => {
+          let symbolTops= topsData[0];
+          if(symbolTops.sector !='n/a' && that.typeList.indexOf(symbolTops.sector)==-1){
+            that.typeList.push(symbolTops.sector);
+          }
+        })
+      );
+    });
+    return Promise.all(promises);
+  }
 
   refreshView(){
-    this.displaySymbols = this.symbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+    if(this.symbols!=undefined){
+      this.displaySymbols = this.symbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+    }
   }
 
 

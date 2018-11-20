@@ -18,6 +18,7 @@ import { ContentComponent } from './content/content.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginGuard } from './login.guard';
 import { PaginationComponent } from './pagination/pagination.component';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     PublicPageComponent,
     AuthorizedPageComponent,
     ContentComponent,
+    FilterComponent,
     NavComponent,
     PaginationComponent
   ],

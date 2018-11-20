@@ -7,15 +7,30 @@ export class SymbolService {
   // Observable string sources
   private selectedSymbolSource = new Subject<string>();
 
+  // Observable string sources
+  private sectorTypeList = new Subject<string[]>();
+
+
   // Observable string streams
   selectedSymbol$ = this.selectedSymbolSource.asObservable();
+
+  // Observable string streams
+  typeList$ = this.sectorTypeList.asObservable();
 
   selectSymbol(symbol: string){
       this.selectedSymbolSource.next(symbol);
   }
 
+  updateFilterList(typeList: string[]){
+    this.sectorTypeList.next(typeList);
+  }
+
   getSymbol() {
     return this.selectedSymbol$;
+  }
+
+  getTypeList() {
+    return this.typeList$;
   }
 
 }
