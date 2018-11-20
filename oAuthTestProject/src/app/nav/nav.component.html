@@ -11,10 +11,13 @@
     <div class="row collapse">
         <div class="medium-3 columns">
             <ul class="vertical tabs" data-tabs id="example-tabs">
-            <li role="tab" *ngFor="let symbol of symbols" class="tabs-title">
-                <a (click)="selectedSymbol = symbol.symbol && selectSymbol(symbol.symbol)" [attr.aria-selected]="symbol.symbol == selectedSymbol">{{symbol.symbol}}</a>
-            </li>
+                <li role="tab" *ngFor="let symbol of displaySymbols" class="tabs-title">
+                    <a (click)="selectedSymbol = symbol.symbol && selectSymbol(symbol.symbol)" [attr.aria-selected]="symbol.symbol == selectedSymbol">{{symbol.symbol}}</a>
+                </li>
             </ul>
+            <pagination-component class="grid-x grid-margin-x" *ngIf="listCount > pageSize" (goPage)="goToPage($event)" (goNext)="onNext()"
+                (goPrev)="onPrev()" [pagesToShow]="5" [pageNumber]="pageNumber" [pageSize]="pageSize" [total]="listCount">
+            </pagination-component>
         </div>
     </div>
 </div>

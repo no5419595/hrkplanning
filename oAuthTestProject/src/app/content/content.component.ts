@@ -31,7 +31,6 @@ export class ContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    
   }
   
   getData(symbol:string):void{

@@ -16,10 +16,15 @@ import { Subscription }   from 'rxjs/Subscription';
 export class NavComponent implements OnInit {
   signOutURL: string;
   symbols: any[]=[];
+  displaySymbols: any[]=[];
   selectedSymbol: string;
   subscription: Subscription;
   searchFor: string;
   
+  listCount: number;
+  pageSize: number =8;
+  pageNumber: number = 1;
+  maxPageNumber : number;
 
   constructor(
     private socialAuthService: AuthService,
@@ -48,18 +53,33 @@ export class NavComponent implements OnInit {
 
   search(){
     this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe(data => {
+      let retrievedSymbols: any= data;
       console.log('returnedData:', data);
-      this.symbols=[];
-      this.filterBySymbol(data, this.searchFor);
+      this.symbols= retrievedSymbols.filter( s => s.symbol.indexOf(this.searchFor)!==-1);
+      this.listCount = retrievedSymbols.length;
+      this.refreshView();
     });
   }
 
-  filterBySymbol(data:any, searchFor: string){
-    for(let d of data){
-      if(d.symbol.indexOf(searchFor)!==-1){
-        this.symbols.push(d);
-      }
-    }
+  refreshView(){
+    this.displaySymbols = this.symbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+  }
+
+
+  //pagination
+  goToPage(n: number): void {
+    this.pageNumber = n;
+    this.refreshView();
+  }
+
+  onNext(): void {
+      this.pageNumber++;
+      this.refreshView();
+  }
+
+  onPrev(): void {
+      this.pageNumber--;
+      this.refreshView();
   }
 
 }
