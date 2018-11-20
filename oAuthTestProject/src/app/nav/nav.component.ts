@@ -55,15 +55,14 @@ export class NavComponent implements OnInit {
   search(){
     this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe(data => {
       let retrievedSymbols: any= data;
-      // console.log('returnedData:', data);
       this.symbols= retrievedSymbols.filter( s => s.symbol.indexOf(this.searchFor)!==-1);
 
       let that = this;
       this.typeList=[];
-      this.initializeTypeList().then(function(){
-        console.log('typeList: ' , that.typeList);
-        that.symbolService.updateFilterList(that.typeList);
+      this.initializeTypeList().then(res=>{
+          this.symbolService.updateFilterList(res);
       });
+       
 
       this.listCount = this.symbols.length;
       this.pageNumber=1;
@@ -75,17 +74,26 @@ export class NavComponent implements OnInit {
     var promises = [];
     let h= this.http;
     let that = this;
+    console.log('hereee');
     this.symbols.forEach(function(sym) {
       promises.push(
-        that.http.get(Constants.API_CONSTANT + '/tops?symbols=' +  sym.symbol).subscribe(topsData => {
-          let symbolTops= topsData[0];
-          if(symbolTops.sector !='n/a' && that.typeList.indexOf(symbolTops.sector)==-1){
-            that.typeList.push(symbolTops.sector);
-          }
-        })
-      );
+        new Promise((resolve, reject) => {
+          that.http.get(Constants.API_CONSTANT + '/tops?symbols=' +  sym.symbol)
+          .toPromise()
+          .then(res => { // Success
+            let symbolTops= res[0];
+            if(symbolTops.sector !='n/a' && that.typeList.indexOf(symbolTops.sector)==-1){
+              resolve(symbolTops.sector);
+            }
+          })
+        }));
     });
-    return Promise.all(promises);
+    return new Promise((resolve) => {
+      Promise.all(promises).then(values=> {
+        console.log('values',values);
+        resolve(values);
+      })
+    });
   }
 
   refreshView(){

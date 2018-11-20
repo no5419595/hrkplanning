@@ -22,7 +22,6 @@ export class FilterComponent implements OnInit {
     this.subscription =  
       this.symbolService.typeList$.subscribe(
       types => {
-        console.log('receivedtypes:', types);
         this.typeList = types;
     });
   }
