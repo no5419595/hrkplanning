@@ -1,7 +1,7 @@
 <div class="typelist">
-    <ul class="vertical tabs grid-x" data-tabs id="example-tabs">
+    <ul class="vertical tabs grid-x" *ngIf="typeList!=undefined" data-tabs id="example-tabs">
         <li role="tab" *ngFor="let t of typeList" class="tabs-title medium-5">
-            <input type="checkbox">
+            <input type="checkbox" (change)="onCheckboxChange(t)">
             <label>{{t}}</label>
         </li>
     </ul>

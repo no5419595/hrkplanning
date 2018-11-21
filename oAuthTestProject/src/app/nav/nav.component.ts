@@ -20,6 +20,8 @@ export class NavComponent implements OnInit {
   selectedSymbol: string;
   subscription: Subscription;
   searchFor: string;
+  filters: string[];
+
 
   typeList: any[]=[];
 
@@ -39,6 +41,11 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscription =  
+      this.symbolService.enabledFilters$.subscribe(filtersEnabled =>{
+        console.log('aaaa:', filtersEnabled);
+        this.filters= filtersEnabled;
+      });
   }
 
   selectSymbol(s: string){
@@ -49,10 +56,13 @@ export class NavComponent implements OnInit {
   signOut(){
     this.socialAuthService.signOut();
     this.loginService.logout();
- 
   }
 
   search(){
+    this.symbolService.pushNewFilterMapChange(undefined);
+    this.symbolService.updateFilterList(undefined);
+    this.symbolService.selectSymbol(undefined);
+
     this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe(data => {
       let retrievedSymbols: any= data;
       this.symbols= retrievedSymbols.filter( s => s.symbol.indexOf(this.searchFor)!==-1);
@@ -88,6 +98,7 @@ export class NavComponent implements OnInit {
           })
         }));
     });
+
     return new Promise((resolve) => {
       Promise.all(promises).then(values=> {
         console.log('values',values);
@@ -99,7 +110,11 @@ export class NavComponent implements OnInit {
   refreshView(){
     if(this.symbols!=undefined){
       this.displaySymbols = this.symbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+      if(this.filters!=undefined){
+        console.log('herree');
+      }
     }
+
   }
 
 

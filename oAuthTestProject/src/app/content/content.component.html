@@ -1,5 +1,5 @@
 <div class="data-container">
-    <div *ngIf="topsData"class="data-table grid-y" >
+    <div *ngIf="topsData" class="data-table grid-y" >
       <h4 *ngIf="symbol">{{symbol}}  Summary</h4>
       <table  class="cell auto" *ngIf="symbol">
         <tbody>
@@ -7,8 +7,8 @@
             <td>Symbol</td>
             <td>{{topsData.symbol}}</td>
           </tr>
-          <tr>
-            <td>Security Type</td>
+          <tr *ngIf="topsData.securityType!=undefined">
+            <td >Security Type</td>
             <td>{{topsData.securityType}}</td>
           </tr>
           <tr>
@@ -30,12 +30,12 @@
         </tbody>
       </table>
   </div>
-  <div *ngIf="deepData">  
+  <div *ngIf="deepData!=undefined">  
     <div class="data-table grid-y" >
         <h4 *ngIf="symbol" >{{symbol}} Details</h4>
         <table  class="cell auto" *ngIf="symbol">
           <tbody>
-            <tr>
+            <tr *ngIf="deepData.securityEvent!=undefined">
               <td>Security Event</td>
               <td>{{deepData.securityEvent.securityEvent}} {{deepData.securityEvent.timestamp}}</td>
             </tr>
@@ -47,15 +47,15 @@
               <td>System Event</td>
               <td>{{deepData.systemEvent.systemEvent}} {{deepData.systemEvent.timestamp}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="deepData.tradeBreaks!=undefined">
               <td>Trade Breaks</td>
               <td>{{deepData.tradeBreaks.length}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="deepData.trades!=undefined">
               <td>Trade Count</td>
               <td>{{deepData.trades.length}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="deepData.tradingStatus!=undefined">
               <td>Trading Status</td>
               <td>{{deepData.tradingStatus.status}} {{deepData.tradingStatus.timestamp}}</td>
             </tr>
