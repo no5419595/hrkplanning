@@ -45,11 +45,12 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit() {
     this.subscription =  
-      this.symbolService.enabledFilters$.subscribe(filtersEnabled =>{
+      this.symbolService.typeList$.subscribe(filtersEnabled =>{
         console.log('filtersEnabled:', filtersEnabled);
         this.filters= filtersEnabled;
-        this.refreshView();
         this.pageNumber=1;
+        this.refreshView();
+        // this.pageNumber=1;
       });
 
     this.searchTermSubscription= 
@@ -71,7 +72,6 @@ export class SearchResultComponent implements OnInit {
   }
 
   searchAndDisplay(){
-    this.symbolService.pushNewFilterMapChange(undefined);
     this.symbolService.updateFilterList(undefined);
     this.symbolService.selectSymbol(undefined);
     this.type_symMapping={};
@@ -82,10 +82,12 @@ export class SearchResultComponent implements OnInit {
 
       this.typeList=[];
       this.initializeTypeList().then(res=>{
-          this.symbolService.updateFilterList(res);
-          console.log('type- sym mapping', this.type_symMapping);
-          this.refreshView();
-          this.pageNumber=1;
+
+        //all filters sent to the filter component
+        this.symbolService.updateFilterList(res);
+
+        this.refreshView();
+        this.pageNumber=1;
       });
     });
   }
@@ -94,7 +96,7 @@ export class SearchResultComponent implements OnInit {
     var promises = [];
     let h= this.http;
     let that = this;
-    // console.log('hereee');
+
     this.symbols.forEach(function(sym) {
       promises.push(
         new Promise((resolve, reject) => {
@@ -102,9 +104,6 @@ export class SearchResultComponent implements OnInit {
 
           .toPromise()
           .then(res => { // Success
-            console.log('what is this:', res );
-            console.log('what is this2:', JSON.parse(JSON.stringify(res)).sector );
-
             let sector = JSON.parse(JSON.stringify(res)).sector;
 
             if(sector==undefined){
@@ -125,7 +124,17 @@ export class SearchResultComponent implements OnInit {
 
     return new Promise((resolve) => {
       Promise.all(promises).then(values=> {
-        resolve(values.filter((v,i) => values.indexOf(v) === i && v!=undefined));
+
+        //convert this to map
+        let temp = values.filter((v,i) => values.indexOf(v) === i && v!=undefined);
+        let tempMap = {};
+        temp.forEach(type=>{
+            if(type!="" && type!==undefined){
+              tempMap[type]=false;
+            }
+        });
+        console.log('now:', tempMap);
+        resolve(tempMap);
       })
     });
   }
@@ -138,10 +147,7 @@ export class SearchResultComponent implements OnInit {
       if(this.filters!=undefined){
         
         for (var sector in this.filters) {
-          // console.log('f:' , sector);
-          // console.log('?', this.filters[sector]);
           if(this.filters[sector]){
-            // console.log('true!');
             let symbolsInWithThisFilter= this.type_symMapping[sector];
             symbolsInWithThisFilter.forEach(symbol=>{
               tempDisplaySymbols.push(symbol);
@@ -151,7 +157,6 @@ export class SearchResultComponent implements OnInit {
         if(tempDisplaySymbols.length==0){
           tempDisplaySymbols= this.symbols;
         }
-        console.log('finally...!', tempDisplaySymbols);
       }else{
         tempDisplaySymbols= this.symbols;
       }

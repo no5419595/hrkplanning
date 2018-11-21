@@ -24,13 +24,8 @@ export class FilterComponent implements OnInit {
     this.subscription =  
       this.symbolService.typeList$.subscribe(
       types => {
-        this.typeList= types;
-        if(types!=undefined){
-          types.forEach(type=>{
-            this.enabledMap[type]= false;
-          });
-          console.log('filters', this.enabledMap);
-        }
+        this.enabledMap=types;
+        this.typeList= this.enabledMap==undefined? undefined: Object.keys(this.enabledMap);
     });
   }
 
@@ -38,11 +33,10 @@ export class FilterComponent implements OnInit {
   }
 
   onCheckboxChange(filterName: string){
-    console.log('filterNameChecked:' , filterName);
     let temp: boolean = this.enabledMap[filterName];
     this.enabledMap[filterName] =!temp;
     console.log('now the map:' , this.enabledMap);
-    this.symbolService.pushNewFilterMapChange(this.enabledMap);
+    this.symbolService.updateFilterList(this.enabledMap);
   }
   
 }

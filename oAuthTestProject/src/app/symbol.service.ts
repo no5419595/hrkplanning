@@ -13,9 +13,6 @@ export class SymbolService {
     this.selectedSymbolSource.next(symbol);
   }
 
-  getSymbol() {
-    return this.selectedSymbol$;
-  }
 
   /* Filter List*/
   private sectorTypeList = new Subject<any>();
@@ -26,22 +23,6 @@ export class SymbolService {
     this.sectorTypeList.next(typeList);
   }
 
-  getTypeList() {
-    return this.typeList$;
-  }
-
-  /* Enabled filter list*/
-  private enabledFilterMap = new Subject<any>();
-  enabledFilters$ = this.enabledFilterMap.asObservable();
-
-  pushNewFilterMapChange(e: any){
-    this.enabledFilterMap.next(e);
-  }
-
-  getEnabledFilters() {
-    return this.enabledFilters$;
-  }
-
   /* search term */
   private search = new Subject<any>();
   searchTerm$ = this.search.asObservable();
@@ -50,9 +31,6 @@ export class SymbolService {
     this.search.next(e);
   }
 
-  getSearchTerm() {
-    return this.searchTerm$;
-  }
 
 
 }
