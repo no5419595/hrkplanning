@@ -19,6 +19,7 @@ import { NavComponent } from './nav/nav.component';
 import { LoginGuard } from './login.guard';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FilterComponent } from './filter/filter.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FilterComponent } from './filter/filter.component';
     ContentComponent,
     FilterComponent,
     NavComponent,
+    SearchResultComponent,
     PaginationComponent
   ],
   exports:[RouterModule],

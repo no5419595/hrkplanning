@@ -9,11 +9,11 @@ import { Subscription }   from 'rxjs/Subscription';
 
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  selector: 'search-result',
+  templateUrl: './search-result.component.html',
+  styleUrls: ['./search-result.component.scss']
 })
-export class NavComponent implements OnInit {
+export class SearchResultComponent implements OnInit {
   signOutURL: string;
 
   symbols: any[]=[];

@@ -30,6 +30,7 @@ export class SymbolService {
     return this.typeList$;
   }
 
+  /* Enabled filter list*/
   private enabledFilterMap = new Subject<any>();
   enabledFilters$ = this.enabledFilterMap.asObservable();
 
@@ -40,5 +41,6 @@ export class SymbolService {
   getEnabledFilters() {
     return this.enabledFilters$;
   }
+
 
 }
