@@ -1,23 +1,14 @@
 
 
 <div class=" nav-container grid-container">
-    <a class="button cell" [href]="signOutURL" (click)="signOut()">Sign Out</a>
+    <div class="grid-x">
+        <div *ngIf="!symbol" class="medium-8">Search and select a stock (eg. AAPL)</div>
+        <a class="button cell medium-4  " [href]="signOutURL" (click)="signOut()">Sign Out</a>        
+    </div>
     <div>
         <div class="grid-x">
             <input class="medium-8" [(ngModel)]="searchFor" type="search">
             <button class="medium-4 button search-button" (click)="search()">Search</button>        
         </div>
     </div>
-    <!-- <div class="row collapse">
-        <div class="medium-3 columns">
-            <ul class="vertical tabs" data-tabs id="example-tabs">
-                <li role="tab" *ngFor="let symbol of displaySymbols" class="tabs-title">
-                    <a (click)="selectedSymbol = symbol.symbol && selectSymbol(symbol.symbol)" [attr.aria-selected]="symbol.symbol == selectedSymbol">{{symbol.symbol}}</a>
-                </li>
-            </ul>
-            <pagination-component class="grid-x grid-margin-x" *ngIf="listCount > pageSize" (goPage)="goToPage($event)" (goNext)="onNext()"
-                (goPrev)="onPrev()" [pagesToShow]="5" [pageNumber]="pageNumber" [pageSize]="pageSize" [total]="listCount">
-            </pagination-component>
-        </div>
-    </div> -->
 </div>

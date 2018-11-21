@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, GoogleLoginProvider } from "angular5-social-login";
+import { AuthService } from "angular5-social-login";
 import { LoginService } from "../login.service";
-import { Router } from '@angular/router';
 import { Constants} from '../Constants';
 import { HttpClient} from '@angular/common/http';
 import { SymbolService} from '../symbol.service';
@@ -29,7 +28,6 @@ export class SearchResultComponent implements OnInit {
   subscription: Subscription;
   searchTermSubscription: Subscription;
 
-
   //pagination
   listCount: number;
   pageSize: number =8;
@@ -39,7 +37,6 @@ export class SearchResultComponent implements OnInit {
   constructor(
     private socialAuthService: AuthService,
     private loginService: LoginService,
-    private route: Router,
     private http: HttpClient,
     private symbolService: SymbolService
   ) { 
@@ -57,6 +54,8 @@ export class SearchResultComponent implements OnInit {
     this.searchTermSubscription= 
       this.symbolService.searchTerm$.subscribe(searchTerm =>{
         console.log('searchTerm:', searchTerm);
+        this.searchFor=searchTerm;
+        this.searchAndDisplay();
       });
   }
 
@@ -70,7 +69,7 @@ export class SearchResultComponent implements OnInit {
     this.loginService.logout();
   }
 
-  search(){
+  searchAndDisplay(){
     this.symbolService.pushNewFilterMapChange(undefined);
     this.symbolService.updateFilterList(undefined);
     this.symbolService.selectSymbol(undefined);
