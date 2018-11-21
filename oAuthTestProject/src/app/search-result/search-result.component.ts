@@ -49,6 +49,7 @@ export class SearchResultComponent implements OnInit {
         console.log('filtersEnabled:', filtersEnabled);
         this.filters= filtersEnabled;
         this.refreshView();
+        this.pageNumber=1;
       });
 
     this.searchTermSubscription= 
@@ -83,11 +84,9 @@ export class SearchResultComponent implements OnInit {
       this.initializeTypeList().then(res=>{
           this.symbolService.updateFilterList(res);
           console.log('type- sym mapping', this.type_symMapping);
+          this.refreshView();
+          this.pageNumber=1;
       });
-       
-      this.listCount = this.symbols.length;
-      this.pageNumber=1;
-      this.refreshView();
     });
   }
   
@@ -157,7 +156,7 @@ export class SearchResultComponent implements OnInit {
         tempDisplaySymbols= this.symbols;
       }
       this.displaySymbols = tempDisplaySymbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
-
+      this.listCount = tempDisplaySymbols.length;
     }
 
   }

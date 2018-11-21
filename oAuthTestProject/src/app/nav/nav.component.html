@@ -3,7 +3,7 @@
 <div class=" nav-container grid-container">
     <div class="grid-x">
         <div *ngIf="!symbol" class="medium-8">Search and select a stock (eg. AAPL)</div>
-        <a class="button cell medium-4  " [href]="signOutURL" (click)="signOut()">Sign Out</a>        
+        <a class="button cell medium-4 signout-button" [href]="signOutURL" (click)="signOut()">Sign Out</a>        
     </div>
     <div>
         <div class="grid-x">
