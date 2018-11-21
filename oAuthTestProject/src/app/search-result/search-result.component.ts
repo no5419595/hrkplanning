@@ -27,6 +27,8 @@ export class SearchResultComponent implements OnInit {
   searchFor: string;
 
   subscription: Subscription;
+  searchTermSubscription: Subscription;
+
 
   //pagination
   listCount: number;
@@ -47,9 +49,14 @@ export class SearchResultComponent implements OnInit {
   ngOnInit() {
     this.subscription =  
       this.symbolService.enabledFilters$.subscribe(filtersEnabled =>{
-        console.log('aaaa:', filtersEnabled);
+        console.log('filtersEnabled:', filtersEnabled);
         this.filters= filtersEnabled;
         this.refreshView();
+      });
+
+    this.searchTermSubscription= 
+      this.symbolService.searchTerm$.subscribe(searchTerm =>{
+        console.log('searchTerm:', searchTerm);
       });
   }
 

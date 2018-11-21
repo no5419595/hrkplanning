@@ -42,5 +42,17 @@ export class SymbolService {
     return this.enabledFilters$;
   }
 
+  /* search term */
+  private search = new Subject<any>();
+  searchTerm$ = this.search.asObservable();
+
+  updateSearchTerm(e: any){
+    this.search.next(e);
+  }
+
+  getSearchTerm() {
+    return this.searchTerm$;
+  }
+
 
 }
