@@ -15,16 +15,20 @@ import { Subscription }   from 'rxjs/Subscription';
 })
 export class NavComponent implements OnInit {
   signOutURL: string;
+
   symbols: any[]=[];
   displaySymbols: any[]=[];
-  selectedSymbol: string;
-  subscription: Subscription;
-  searchFor: string;
-  filters: string[];
-
-
   typeList: any[]=[];
+  filters: string[];
+  type_symMapping: any= {};
 
+  //symbol
+  selectedSymbol: string;
+  searchFor: string;
+
+  subscription: Subscription;
+
+  //pagination
   listCount: number;
   pageSize: number =8;
   pageNumber: number = 1;
@@ -45,6 +49,7 @@ export class NavComponent implements OnInit {
       this.symbolService.enabledFilters$.subscribe(filtersEnabled =>{
         console.log('aaaa:', filtersEnabled);
         this.filters= filtersEnabled;
+        this.refreshView();
       });
   }
 
@@ -62,18 +67,19 @@ export class NavComponent implements OnInit {
     this.symbolService.pushNewFilterMapChange(undefined);
     this.symbolService.updateFilterList(undefined);
     this.symbolService.selectSymbol(undefined);
+    this.type_symMapping={};
 
-    this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe(data => {
+    this.http.get(Constants.API_CONSTANT + '/ref-data/symbols' ).subscribe( data=> {
       let retrievedSymbols: any= data;
       this.symbols= retrievedSymbols.filter( s => s.symbol.indexOf(this.searchFor)!==-1);
-
-      let that = this;
+      console.log('alldata?', this.symbols);
+      // let that = this;
       this.typeList=[];
       this.initializeTypeList().then(res=>{
           this.symbolService.updateFilterList(res);
+          console.log('type- sym mapping', this.type_symMapping);
       });
        
-
       this.listCount = this.symbols.length;
       this.pageNumber=1;
       this.refreshView();
@@ -84,35 +90,73 @@ export class NavComponent implements OnInit {
     var promises = [];
     let h= this.http;
     let that = this;
-    console.log('hereee');
+    // console.log('hereee');
     this.symbols.forEach(function(sym) {
+      console.log('1:',sym.symbol);
+
       promises.push(
         new Promise((resolve, reject) => {
           that.http.get(Constants.API_CONSTANT + '/tops?symbols=' +  sym.symbol)
           .toPromise()
           .then(res => { // Success
             let symbolTops= res[0];
+
+            let mappingJsonArray = that.type_symMapping[symbolTops.sector];
+            if(mappingJsonArray===undefined){
+              mappingJsonArray = [];
+            }
+            mappingJsonArray.push(sym);
+            that.type_symMapping[symbolTops.sector]=mappingJsonArray;
+
             if(symbolTops.sector !='n/a' && that.typeList.indexOf(symbolTops.sector)==-1){
               resolve(symbolTops.sector);
+            }else{
+              resolve(undefined);
             }
-          })
+          }).catch(err=>{
+            console.log('error:', err);
+            console.log('error?', sym.symbol);
+            console.log('what is the sym?', sym);
+            resolve(undefined);
+          });
         }));
     });
 
     return new Promise((resolve) => {
       Promise.all(promises).then(values=> {
-        console.log('values',values);
-        resolve(values);
+        console.log('all tops values',values);
+        resolve(values.filter(values => values!=undefined));
       })
     });
   }
 
   refreshView(){
     if(this.symbols!=undefined){
-      this.displaySymbols = this.symbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+      this.displaySymbols=[];
+      let tempDisplaySymbols=[];
+
       if(this.filters!=undefined){
-        console.log('herree');
+        
+        for (var sector in this.filters) {
+          // console.log('f:' , sector);
+          // console.log('?', this.filters[sector]);
+          if(this.filters[sector]){
+            // console.log('true!');
+            let symbolsInWithThisFilter= this.type_symMapping[sector];
+            symbolsInWithThisFilter.forEach(symbol=>{
+              tempDisplaySymbols.push(symbol);
+            });
+          }
+        }
+        if(tempDisplaySymbols.length==0){
+          tempDisplaySymbols= this.symbols;
+        }
+        console.log('finally...!', tempDisplaySymbols);
+      }else{
+        tempDisplaySymbols= this.symbols;
       }
+      this.displaySymbols = tempDisplaySymbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+
     }
 
   }
