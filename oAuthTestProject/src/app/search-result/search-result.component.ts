@@ -46,16 +46,13 @@ export class SearchResultComponent implements OnInit {
   ngOnInit() {
     this.subscription =  
       this.symbolService.typeList$.subscribe(filtersEnabled =>{
-        console.log('filtersEnabled:', filtersEnabled);
         this.filters= filtersEnabled;
         this.pageNumber=1;
         this.refreshView();
-        // this.pageNumber=1;
       });
 
     this.searchTermSubscription= 
       this.symbolService.searchTerm$.subscribe(searchTerm =>{
-        console.log('searchTerm:', searchTerm);
         this.searchFor=searchTerm;
         this.searchAndDisplay();
       });
@@ -113,7 +110,7 @@ export class SearchResultComponent implements OnInit {
             if(mappingJsonArray===undefined){
               mappingJsonArray = [];
             }
-            mappingJsonArray.push(sym);
+            mappingJsonArray.push(res);
             that.type_symMapping[sector]=mappingJsonArray;     
             resolve(sector!=undefined || sector!==""? sector: undefined);
           }).catch(err=>{
@@ -133,7 +130,6 @@ export class SearchResultComponent implements OnInit {
               tempMap[type]=false;
             }
         });
-        console.log('now:', tempMap);
         resolve(tempMap);
       })
     });
@@ -144,23 +140,37 @@ export class SearchResultComponent implements OnInit {
       this.displaySymbols=[];
       let tempDisplaySymbols=[];
 
-      if(this.filters!=undefined){
-        
-        for (var sector in this.filters) {
-          if(this.filters[sector]){
-            let symbolsInWithThisFilter= this.type_symMapping[sector];
+      if( this.filters!=undefined && Object.keys(this.filters).length>0){
+
+        if(Object.entries(this.filters).filter(f=>{ f[1]=='false'}).length==0){
+          Object.keys(this.type_symMapping).forEach(typeKey=>{
+            let symbolsInWithThisFilter= this.type_symMapping[typeKey];
+            console.log('symbolsInWithThisFilter:', symbolsInWithThisFilter);
             symbolsInWithThisFilter.forEach(symbol=>{
               tempDisplaySymbols.push(symbol);
             });
+          });
+        }else{
+
+          for (var sector in this.filters) {
+            if(this.filters[sector]){
+              let symbolsInWithThisFilter= this.type_symMapping[sector];
+  
+              symbolsInWithThisFilter.forEach(symbol=>{
+                tempDisplaySymbols.push(symbol);
+              });
+            }
           }
         }
+
+      
         if(tempDisplaySymbols.length==0){
           tempDisplaySymbols= this.symbols;
         }
-      }else{
-        tempDisplaySymbols= this.symbols;
       }
+
       this.displaySymbols = tempDisplaySymbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);
+        // console.log('displaySymbols:', this.displaySymbols);
       this.listCount = tempDisplaySymbols.length;
     }
 

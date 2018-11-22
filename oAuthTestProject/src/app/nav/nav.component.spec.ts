@@ -53,20 +53,6 @@ describe('NavComponent', () => {
     expect(component).toBeTruthy();
   });
 
- it('should select the symbol in the service', inject([SymbolService], (s) => {
-    component.symbolService= s;    
-    expect(s).toBeDefined();
-    let spy = spyOn(component.symbolService , "selectSymbol");
-    component.selectSymbol('testASDF');
-    expect(spy).toHaveBeenCalledWith('testASDF');
-  }));
-
-
-  it('should filter the data by the keyword', () => {
-    let mockData= [{symbol: "AA"},{symbol:"BB"},{symbol:"CC"}];
-    component.filterBySymbol(mockData, "BB");
-    expect(component.symbols).toEqual([{symbol: "BB"}]);
-  });
 
   it('should sign out', inject([AuthService, LoginService], (_socialAuthService, _loginService) => {
     expect(_socialAuthService).toBeDefined();
