@@ -145,7 +145,7 @@ export class SearchResultComponent implements OnInit {
         if(Object.entries(this.filters).filter(f=>{ f[1]=='false'}).length==0){
           Object.keys(this.type_symMapping).forEach(typeKey=>{
             let symbolsInWithThisFilter= this.type_symMapping[typeKey];
-            console.log('symbolsInWithThisFilter:', symbolsInWithThisFilter);
+            // console.log('symbolsInWithThisFilter:', symbolsInWithThisFilter);
             symbolsInWithThisFilter.forEach(symbol=>{
               tempDisplaySymbols.push(symbol);
             });
@@ -167,6 +167,7 @@ export class SearchResultComponent implements OnInit {
         if(tempDisplaySymbols.length==0){
           tempDisplaySymbols= this.symbols;
         }
+        console.log('displaySymbols:', tempDisplaySymbols);
       }
 
       this.displaySymbols = tempDisplaySymbols.slice((this.pageNumber -1) * this.pageSize, this.pageNumber * this.pageSize);

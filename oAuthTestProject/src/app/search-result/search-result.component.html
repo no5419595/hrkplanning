@@ -6,6 +6,13 @@
             <ul class="vertical tabs" data-tabs id="example-tabs">
                 <li role="tab" *ngFor="let symbol of displaySymbols" class="tabs-title">
                     <a (click)="selectedSymbol = symbol.symbol && selectSymbol(symbol.symbol)" [attr.aria-selected]="symbol.symbol == selectedSymbol">{{symbol.symbol}}</a>
+                    <div class="info-container">
+                        <span class="info">{{symbol.companyName}}</span>
+                        <span class="info">{{symbol.industry}}</span>
+                        <span class="info">{{symbol.website}}</span>
+                        <span class="info">{{symbol.exchange}}</span>
+                        <!-- <span class="info">{{symbol.description}}</span> -->
+                    </div>
                 </li>
             </ul>
             <pagination-component class="grid-x grid-margin-x" *ngIf="listCount > pageSize" (goPage)="goToPage($event)" (goNext)="onNext()"
