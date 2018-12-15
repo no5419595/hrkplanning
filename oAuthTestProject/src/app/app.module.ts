@@ -13,6 +13,7 @@ import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angul
 import { getAuthServiceConfigs } from "./socialloginConfig";
 import { LoginService } from './login.service';
 import { SymbolService } from './symbol.service';
+import { CatService } from './cat.service';
 import { Constants } from './Constants';
 import { ContentComponent } from './content/content.component';
 import { NavComponent } from './nav/nav.component';
@@ -47,6 +48,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
     } ,
     LoginService,
     SymbolService,
+    CatService,
     LoginGuard
   ],
   bootstrap: [AppComponent]
