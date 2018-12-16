@@ -1,0 +1,10 @@
+{
+  "logLevel": "debug",
+  "serverTimeout": 3600000,
+  "uploadDir": "timeReportUploads/",
+  "dbHost": "ec2-23-21-65-173.compute-1.amazonaws.com",
+  "dbPort": 5432,
+  "dbName": "d1iocms4kivav6",
+  "dbUser": "omqdafdlknswxk",
+  "dbPass": "6e50cf27ea49b269cb40bde3aac0fe179be65aa7ca21619f78b2346ed032b8a0"
+}

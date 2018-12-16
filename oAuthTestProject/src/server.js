@@ -2,16 +2,27 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const database = require('./database/db');
+
 var corsOptions = {
     origin: 'http://localhost:4200',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+    optionsSuccessStatus: 200
   }
-  
+
+
+//DB
+setTimeout(function(){
+    database.query();
+});
+
+//CORS
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.listen(8000, () => {
     console.log('Server started!');
 });
+
+//REST API
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.end('zz');
